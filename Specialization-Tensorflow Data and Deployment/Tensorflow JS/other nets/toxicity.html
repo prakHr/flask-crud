@@ -1,0 +1,97 @@
+<html>
+<head>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/toxicity"></script>
+
+</head>
+<body>
+    <iframe id="frmFile" src="comments.txt" style="display: none;"></iframe>
+    <!--<script src="toxicity.js" type="module"></script>-->
+</body>
+<script lang="js">
+var arrLines,curLine,sentences,current_sentence,flag,iterator=0;
+function LoadFile() {
+    var oFrame = document.getElementById("frmFile");
+    //console.log(oFrame);
+    var strRawContents = oFrame.contentWindow.document.body.childNodes[0].innerHTML;
+    //console.log("Here "+strRawContents);
+    while (strRawContents.indexOf("\r") >= 0)
+    {
+        strRawContents = strRawContents.replace("\r", "");
+    }
+    arrLines = strRawContents.split("\n");
+    //console.log("Here1 "+arrLines);
+        
+    //alert("File " + oFrame.src + " has " + arrLines.length + " lines");
+        //console.log("File " + oFrame.src + " has " + arrLines.length + " lines");
+    for (var i = 0; i < arrLines.length; i++) {
+        
+        curLine = arrLines[i];
+        //alert("Line #" + (i + 1) + " is: '" + curLine + "'");
+            //console.log("Line #" + (i + 1) + " is: '" + curLine + "'");
+    }
+
+    return arrLines;
+}
+window.onload = function run()
+{
+    
+    const threshold = 0.85;
+    sentences=LoadFile(); 
+    //console.log(arrLines[0]);
+    
+    // for (var i = 0; i < sentences.length; i++) {
+    //         curLine = sentences[i];
+    //     //alert("Line #" + (i + 1) + " is: '" + curLine + "'");
+    //         console.log("Line #" + (i + 1) + " length is: '" + curLine.length + "'");
+    //         console.log("Line #" + (i + 1) + " is: '" + curLine + "'");
+    //     }
+
+    toxicity.load(threshold).then(model => {
+        for(var t=0;t<sentences.length;t++){
+            current_sentence=sentences[t];
+            //console.log("Here (t+1) ="+(t+1)+" current_sentence is: '" + current_sentence + "'");
+
+            if(current_sentence.length==0 || current_sentence=='')continue;
+            model.classify([current_sentence]).then(predictions => 
+            {
+                flag=false;
+                console.log(predictions);
+                
+                for(var j=0; j<7; j++){
+                    
+                    
+                    if(predictions[j].results[0].match){
+                    
+                        flag=true;
+                        break;
+                    }  
+                
+                }
+                if(flag==true){
+                    console.log( " For: '" + sentences[iterator] + "'");    
+                    for(var j=0; j<7; j++){
+                    
+                    
+                        if(predictions[j].results[0].match){
+                    
+                            console.log(predictions[j].label + " was found with probability of " + predictions[j].results[0].probabilities[1]*100);
+                        }  
+                
+                    }
+                }
+                
+                iterator += 1;
+    
+                 
+            //console.log("At end of flag (t+1)=" + (t + 1)); 
+            });    
+            //console.log("At end of classify (t+1)=" + (t + 1));
+        }
+        
+    });
+}
+//document.addEventListener('DOMContentLoaded', run);
+
+</script>
+</html>    

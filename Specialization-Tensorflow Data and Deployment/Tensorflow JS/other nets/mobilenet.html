@@ -1,0 +1,52 @@
+<html>
+<head>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"> </script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet@1.0.0"> </script> 
+<style>
+img {
+  width: 300;
+  height: 200;
+}
+</style>
+</head>
+<body>
+	<!--How to change the height and width of image(Put inside div)-->
+	<div id="img_keeper" style="font-family:courier;font-size:24px;height=300px">
+		<img id="img" src="luffy-python.jpeg"></img>
+		<div id="output" style="font-family:courier;font-size:24px;height=300px"></div>	
+	</div>
+    
+    <div id="img_keeper_1" style="font-family:courier;font-size:24px;height=300px">
+		<!--<img id="img" src="coffee.jpg" width="500" height="600"></img>	-->
+		<img id="img_1" src="coffee.jpg"></img>
+		<div id="output_1" style="font-family:courier;font-size:24px;height=300px"></div>
+	</div>
+    
+</body>
+<script>
+async function run(){
+
+
+	const img = document.getElementById('img');
+    const outp = document.getElementById('output');
+    
+    const img1 = document.getElementById('img_1');
+    const outp1 = document.getElementById('output_1');
+    	
+	async function predictor(img,outp){
+		mobilenet.load().then(model => {
+        	model.classify(img).then(predictions => {
+            	console.log(predictions);
+            	for(var i = 0; i<predictions.length; i++){
+                outp.innerHTML += "<br/>" + predictions[i].className + " : " + predictions[i].probability;
+            	}
+        	});
+    	});	
+	};
+    await predictor(img,outp);
+    await predictor(img1,outp1);
+}
+
+document.addEventListener('DOMContentLoaded', run);
+</script>
+</html>
