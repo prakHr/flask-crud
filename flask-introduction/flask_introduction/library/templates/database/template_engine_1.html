@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
+        <h1>Corresponding list of barcodes with names:</h1>
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
+        <link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet'>
+        <!-- <script src="https://code.jquery.com/jquery-3.3.1.js"></script> -->
+        <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+        <script src="{{url_for('static', filename='canvasjs.min.js')}}"></script>
+        <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+
+        <!--     Fonts and icons     -->
+        <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+
+        <!-- CSS Files -->
+        <link href="{{url_for('static', filename='material-dashboard.css')}}" rel="stylesheet" />
+
+
+
+    </head>
+
+
+    <body>
+        <div class="">
+
+            <div class="main-panel">
+
+              <div class="content">
+                <div class="container-fluid">
+                  <div class="row">
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                      <div class="card card-stats">
+                        <div class="card-header card-header-victory card-header-icon">
+                          <div class="card-icon">
+                            <i class="material-icons">dashboard</i>
+                          </div>
+                          <p class="card-category">Total Bills</p>
+                          <h3 class="card-title">{{ totalBills }}
+                            <small>units</small>
+                          </h3>
+                        </div>
+                        <div class="card-footer">
+                          <div class="stats">
+                            <i class="material-icons text-success">added</i>
+                            Get More Bills...
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                      <div class="card card-stats">
+                        <div class="card-header card-header-success card-header-icon">
+                          <div class="card-icon">
+                            <i class="material-icons">mic</i>
+                          </div>
+                          <p class="card-category">Current total Speech Items</p>
+                          <h3 class="card-title">${{ totalSpeechInventory }}</h3>
+                        </div>
+                        <div class="card-footer">
+                          <div class="stats">
+                            <i class="material-icons">local_offer</i> Tracked from our database
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                      <div class="card card-stats">
+                        <div class="card-header card-header-warning card-header-icon">
+                          <div class="card-icon">
+                            <i class="fa fa-barcode"></i>
+                          </div>
+                          <p class="card-category">Barcodes</p>
+                          <h3 class="card-title">+{{ totalBarcodes }}</h3>
+                        </div>
+                        <div class="card-footer">
+                          <div class="stats">
+                            <i class="material-icons">update</i> Just Updated
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+
+
+                </div>
+              </div>
+
+            </div>
+        </div>
+
+        <table id="example" class="display" width="100%" data-page-length="25" data-order="[[ 1, &quot;asc&quot; ]]">
+            <thead>
+                <tr>
+                    <th style="color: #9c27b0;font-family: 'Lobster';font-size: 22px;text-align:center;">Kirana Name</th>
+                    <th style="color: #9c27b0;font-family: 'Lobster';font-size: 22px;text-align:center;">Barcode Name</th>
+                    <th style="color: #9c27b0;font-family: 'Lobster';font-size: 22px;text-align:center;" data-orderable="false">Barcode Number</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                {% for a in authors %}
+                <tr>
+                    <td style="text-align:center;">{{ a[0] }}</td>
+                    <td style="text-align:center;">{{ a[1] }}</td>
+                    <td style="color: #9c27b0;text-align:center;">{{ a[2] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <!-- <div class="container-2">
+
+            <div id="ct-chart" style="height: 370px; max-width: 460px; margin: 0px auto;"></div>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <div id="ct-pie-chart" style="height: 370px; max-width: 460px; margin: 0px auto;"></div>
+
+
+
+        </div> -->
+        <div id="parentContainer" style="width: 100%;">
+                <div id="ct-chart" style="float: left; width: 33%; height: 260px;"></div>
+                <div id="ct-pie-chart" style="float: left; width: 33%; height: 260px;"></div>
+                <div id="ct-bar-chart" style="float: left; width: 33%; height: 260px;"></div>
+        </div>
+        <table id="example" class="display" width="100%" data-page-length="25" data-order="[[ 1, &quot;asc&quot; ]]">
+
+    </body>
+    <script>
+        function explodePie (e) {
+
+            if(typeof (e.dataSeries.dataPoints[e.dataPointIndex].exploded) === "undefined" || !e.dataSeries.dataPoints[e.dataPointIndex].exploded) {e.dataSeries.dataPoints[e.dataPointIndex].exploded = true;}
+            else  { e.dataSeries.dataPoints[e.dataPointIndex].exploded = false;}
+            e.chart.render();
+        }
+        var myChart,myDoughnutChart,mySplineChart;
+        var namesArray,billsArray,speechArray,dataPointsArray=[];
+        //(PieChart,BarChart,LineChart)=>(Barcodes,Bills,SpeechItems)=>(2,1,3)
+        var getData=$.get('/data');
+        getData.done(function(results){
+            namesArray=results.array_NBBS[0];
+            billsArray=results.array_NBBS[1];
+            for(var i=0;i<namesArray.length;i++){
+                //console.log(namesArray[i]);
+                //console.log(typeof(namesArray[i]));
+                dataPointsArray.push({label: namesArray[i], y: billsArray[i]});
+            };
+            myChart=new CanvasJS.Chart("ct-chart",{
+                animationEnabled: true,
+                theme: "light2",
+                title: {
+                    text: "Sold Bills"
+                },
+                axisY: {
+                    title: "total bills",
+                    titleFontSize: 24
+                },
+                data:[{
+                    type: "column",
+                    yValueFormatString: "#,### Bills",
+                    indexLabel: "{y}",
+                    dataPoints:dataPointsArray
+                }]
+            });
+
+            myChart.render();
+            dataPointsArray=[];
+            barcodesArray=results.array_NBBS[2];
+            for(var i=0;i<namesArray.length;i++){
+                dataPointsArray.push({y: barcodesArray[i], name: namesArray[i]});
+            };
+            myDoughnutChart = new CanvasJS.Chart("ct-pie-chart", {
+                theme: "dark2",
+                exportFileName: "Doughnut Chart",
+                exportEnabled: true,
+                animationEnabled: true,
+                title:{
+                    text: "Usage of Barcodes"
+                },
+                legend:{
+                    cursor: "pointer",
+                    itemclick: explodePie
+                },
+                data: [{
+                    type: "doughnut",
+                    innerRadius: 90,
+                    showInLegend: true,
+                    toolTipContent: "<b>{name}</b>: {y} barcodes (#percent%)",
+                    indexLabel: "{name} - #percent%",
+                    dataPoints: dataPointsArray
+                }]
+            });
+            myDoughnutChart.render();
+            dataPointsArray=[];
+            speechArray=results.array_NBBS[3];
+            //console.log(speechArray);
+            for(var i=0;i<namesArray.length;i++){
+                dataPointsArray.push({label: namesArray[i], y: speechArray[i]});
+            };
+            mySplineChart = new CanvasJS.Chart("ct-bar-chart", {
+                animationEnabled: true,
+                title:{
+                    text: "Speech Inventory Data"
+                },
+                axisY: {
+                    title: "Speech items"
+                    //valueFormatString: "#0,,."
+                    //suffix: "mn",
+                    //prefix: "$"
+                },
+                data: [{
+                    type: "splineArea",
+                    color: "rgba(54,158,173,.7)",
+                    markerSize: 5,
+                    yValueFormatString: "#:### SpeechItems",
+                    dataPoints: dataPointsArray
+                }]
+            });
+            mySplineChart.render();
+
+
+        });
+
+
+    </script>
+    <script>
+        $.noConflict();
+        jQuery(document).ready(function($) {
+        $('#example').DataTable();
+        });
+    </script>
+</html>

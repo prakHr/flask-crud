@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    	<meta charset="utf-8">
+    	<meta name="viewport" content="width=device-width, initial-scale=1">
+    	<h1>Corresponding list of barcodes with names:</h1>
+    <!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">  
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+        <script src="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
+
+<!-- jQuery library -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        
+    </head>
+
+   
+    <body>
+    	<div class="container">
+    		<table class="table table-striped">
+    		<thead>
+      			<tr>
+        			<th>Barcode Number</th>
+        			<th>Barcode Name</th>
+      			</tr>
+    		</thead>
+    		<tbody>
+    			{% for a in authors %}
+    			<TR>
+    				<TD class="c1">{{a['ID']}}</TD>
+    				{% if a['name'].barcodeName is defined %}
+            			<TD class="c2">{{a['name'].barcodeName}}</TD>
+            		{% endif %}
+    		
+    			</TR>
+    			{% endfor %}
+    		</tbody>
+    		</table>	
+    	</div>
+        <button id="update">Update the Chart</button>
+        <!-- <div class="ct-chart ct-perfect-fourth"></div> -->
+        <div class="ct-chart"></div>
+        <div class="ct-pie-chart"></div>
+        <script>
+            var myChart,myPieChart;
+            var getData=$.get('/barcodes_template_data');
+            getData.done(function(results){
+                var data={
+                    labels:results.results[0],
+                    series:[
+                        results.results[1]
+                    ]
+                };
+        
+                var options={
+                    low:0,
+                    showArea:true,
+                    showPoint: false,
+                    width: '500px',
+                    height: '250px'
+                };
+                myChart=new Chartist.Line('.ct-chart', data, options);
+                myChart.on('draw', function(data) {
+                    if(data.type === 'line' || data.type === 'area') {
+                        data.element.animate({
+                            d: {
+                                begin: 2000 * data.index,
+                                dur: 2000,
+                                from: data.path.clone().scale(1, 0).translate(0, data.chartRect.height()).stringify(),
+                                to: data.path.clone().stringify(),
+                                easing: Chartist.Svg.Easing.easeOutQuint
+                            }
+                        });
+                    }
+                });
+                var options1={
+                    donut:true,
+                    showLabel:true
+                };
+                var data1={
+                    series:results.results[1],
+                    labels:results.results[0],
+                };
+                myPieChart= new Chartist.Pie('.ct-pie-chart', data1, options1);
+
+                myPieChart.on('draw',function(data){
+                    if(data.type === 'slice'){
+                        var pathLength = data.element._node.getTotalLength();
+                        data.element.attr({'stroke-dasharray': pathLength + 'px ' + pathLength + 'px'});
+                        var  animationDefinition = {
+                            'stroke-dashoffset': {
+                            id: 'anim' + data.index,
+                            dur: 1000,
+                            from: -pathLength + 'px',
+                            to:  '0px',
+                            easing: Chartist.Svg.Easing.easeOutQuint,
+                            // We need to use `fill: 'freeze'` otherwise our animation will fall back to initial (not visible)
+                            fill: 'freeze'
+                            }
+                        };
+                        // If this was not the first slice, we need to time the animation so that it uses the end sync event of the previous animation
+                        if(data.index !== 0) {
+                            animationDefinition['stroke-dashoffset'].begin = 'anim' + (data.index - 1) + '.end';
+                        }
+                        // We need to set an initial value before the animation starts as we are not in guided mode which would do that for us
+                        data.element.attr({'stroke-dashoffset': -pathLength + 'px'});
+                        // We can't use guided mode as the animations need to rely on setting begin manually
+                        // See http://gionkunz.github.io/chartist-js/api-documentation.html#chartistsvg-function-animate
+                        data.element.animate(animationDefinition, false);
+
+                    }
+                });
+                myPieChart.on('created', function() {
+                    if(window.__anim21278907124) {
+                        clearTimeout(window.__anim21278907124);
+                        window.__anim21278907124 = null;
+                    }
+                    window.__anim21278907124 = setTimeout(myPieChart.update.bind(myPieChart), 10000);
+                });
+
+
+            });
+            function updateChart(){
+                var updatedData=$.get('/barcodes_template_data');
+                updatedData.done(function(results){
+                    var data={
+                    labels:results.results[0],
+                    series:[
+                            results.results[1]
+                        ]
+                    };
+                    var data1={
+                        series:results.results[1],
+                        labels:results.results[0],
+                    };
+                    myChart.update(data);
+                    myPieChart.update(data1);
+                });
+            }
+            $("#update").on('click',updateChart);
+        </script>
+    		
+    </body>
+    
+</html>

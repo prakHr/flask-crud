@@ -1,0 +1,16 @@
+runtime: python37
+#api_version: 1
+#threadsafe: true
+
+handlers:
+- url: /.*
+  secure: always
+  redirect_http_response_code: 301
+  script: auto
+  
+#libraries:
+#  - name: ssl
+#    version: latest
+
+#URL is "your project id".appspot.com
+
