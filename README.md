@@ -11,7 +11,7 @@ logout.
 * [Setup](#setup)
 * [Technologies](#technologies)
 * [Modules](#modules)
-* [Material Icons](#material_icons)
+* [Material Icons](#material icons)
 ---
 ### Summary
 My first in the series of coming apps using flask. Have this idea of building an __interactive dashboard app__ for a very 
