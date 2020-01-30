@@ -47,7 +47,7 @@ Finally, added __material icons__ for attraction purpose which also renders data
 
 ---
 
-### Technology
+### Technologies
 * Python3.6
 * Flask
 * Okta
