@@ -12,6 +12,7 @@ logout.
 * [Technologies](#technologies)
 * [Modules](#modules)
 * [Material Icons](#icons)
+* [Other Downloads](#downloads)
 ---
 ### Summary
 My first in the series of coming apps using flask. Have this idea of building an __interactive dashboard app__ for a very 
@@ -88,3 +89,10 @@ Finally, added __material icons__ for attraction purpose which also renders data
 * local_offer
 * update
 * fa fa-barcode
+
+---
+
+### Downloads
+* [available error pages to choose from](https://colorlib.com/wp/free-error-page-templates/ "My favorite 404 error page")
+* [canvasjs downloader](https://canvasjs.com/download-html5-charting-graphing-library/ "Download examples of charts here")
+* [portions that you like to use from existing material dashboard](https://www.creative-tim.com/product/material-dashboard/?partner=49926 "By Creative Tim")
