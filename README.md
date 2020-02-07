@@ -13,6 +13,9 @@ logout.
 * [Modules](#modules)
 * [Material Icons](#icons)
 * [Other Downloads](#downloads)
+* [Directory Structure](#structure)
+* [Installation Procedure](#procedure)
+
 ---
 ### Summary
 My first in the series of coming apps using flask. Have this idea of building an __interactive dashboard app__ for a very 
@@ -96,3 +99,54 @@ Finally, added __material icons__ for attraction purpose which also renders data
 * [available error pages to choose from](https://colorlib.com/wp/free-error-page-templates/ "My favorite 404 error page")
 * [canvasjs downloader](https://canvasjs.com/download-html5-charting-graphing-library/ "Download examples of charts here")
 * [portions that you like to use from existing material dashboard](https://www.creative-tim.com/product/material-dashboard/?partner=49926 "By Creative Tim")
+
+---
+
+### Structure
+```bash
+|_flask_introduction
+  |_myFlaskApp.py
+  |_database_extractor.py
+  |_ client_secrets.json
+  |_ project1-a9674-firebase-adminsdk-ddztm-263a615578.json
+  |_library
+  | |_ _01_simple.py
+  | |_ _02_html_inside_view.py
+  | |_ _03_01_template_str_inside_view_with_database.py
+  | |_ _03_template_str_inside_view.py
+  | |_ _04_template_outside_view.py
+  | |_ _05_database_app_template_eng.py
+  | |_ client_secrets.json
+  | |_ project1-a9674-firebase-adminsdk-ddztm-263a615578.json
+  |___static
+  |   |_bg.jpg
+  |   |_canvasjs.min.js
+  |   |_clients_secrets.json
+  |   |_colorlib-style.css
+  |   |_flask-crud.jpg
+  |   |_style.css
+  |___templates
+	     |_database
+       |  |_barcodes_template.html
+       |  |_data_table_demo.html
+       |  |_template_engine.html
+       |  |_template_engine_1.html
+       |  |_word_cloud_demo.html
+       |_routing
+	     |  |_404.html
+	     |_dashboard.html
+       |_index.html
+       |_layout.html
+```
+
+---
+
+### Procedure
+```console
+prakhar@prakhar:~$ cd Downloads/flask-introduction
+prakhar@prakhar:~~/Downloads/flask-introduction$ source virtual/bin/activate
+(virtual)prakhar@prakhar:~~/Downloads/flask-introduction$ pip install -r requirements.txt
+(virtual)prakhar@prakhar:~~/Downloads/flask-introduction$ cd flask_introduction
+(virtual)prakhar@prakhar:~~/Downloads/flask-introduction/flask_introduction$ FLASK_APP=myFlaskApp.py flask run
+```
+
