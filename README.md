@@ -126,15 +126,15 @@ Finally, added __material icons__ for attraction purpose which also renders data
   |   |_flask-crud.jpg
   |   |_style.css
   |___templates
-	     |_database
+       |_database
        |  |_barcodes_template.html
        |  |_data_table_demo.html
        |  |_template_engine.html
        |  |_template_engine_1.html
        |  |_word_cloud_demo.html
        |_routing
-	     |  |_404.html
-	     |_dashboard.html
+       |  |_404.html
+       |_dashboard.html
        |_index.html
        |_layout.html
 ```
