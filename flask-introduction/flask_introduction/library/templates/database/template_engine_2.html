@@ -1,29 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
-        <h1>Corresponding list of barcodes with names:</h1>
-        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
-        <link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet'>
+<!-- saved from url=(0142)https://www.pythonanywhere.com/user/zorroP/files/home/zorroP/.virtualenvs/flask-introduction/library/templates/database/template_engine_2.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        
+        <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no" name="viewport">
+        </head><body><h1>Corresponding list of barcodes with names:</h1>
+        <link rel="stylesheet" href="./template_engine_2_files/jquery.dataTables.min.css">
+        <link href="./template_engine_2_files/css" rel="stylesheet">
         <!-- <script src="https://code.jquery.com/jquery-3.3.1.js"></script> -->
-        <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
-        <script src="{{url_for('static', filename='canvasjs.min.js')}}"></script>
-        <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+        <script src="./template_engine_2_files/jquery-1.11.1.min.js.download"></script>
+        <script src="./template_engine_2_files/{{url_for(&#39;static&#39;, filename=&#39;canvasjs.min.js&#39;)}}"></script>
+        <script src="./template_engine_2_files/jquery.dataTables.min.js.download"></script>
 
         <!--     Fonts and icons     -->
-        <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+        <link rel="stylesheet" type="text/css" href="./template_engine_2_files/css(1)">
+        <link rel="stylesheet" href="./template_engine_2_files/font-awesome.min.css">
 
         <!-- CSS Files -->
-        <link href="{{url_for('static', filename='material-dashboard.css')}}" rel="stylesheet" />
+        <link href="./template_engine_2_files/{{url_for(&#39;static&#39;, filename=&#39;material-dashboard.css&#39;)}}" rel="stylesheet">
 
 
 
-    </head>
+    
 
 
-    <body>
+    
         <div class="">
 
             <div class="main-panel">
@@ -84,6 +84,16 @@
                       </div>
                     </div>
                   </div>
+                  <hr>
+                    <label for="fname">Phone number:</label><input type="text" id="txt_reg" name="fname">
+                    <a target="_blank" href="https://www.pythonanywhere.com/user/zorroP/files/home/zorroP/.virtualenvs/flask-introduction/library/templates/database/template_engine_2.html" onclick="this.href=&#39;/read/&#39;+document.getElementById(&#39;txt_reg&#39;).value"><button class="btn btn-primary"> See barcode inventory</button></a>
+                  <hr>
+
+                  <hr>
+                    <label for="fname">Barcode number:</label><input type="text" id="txt_reg1" name="fname1">
+                    <label for="fname">Barcode name:</label><input type="text" id="txt_reg2" name="fname2">
+                    <a target="_blank" href="https://www.pythonanywhere.com/user/zorroP/files/home/zorroP/.virtualenvs/flask-introduction/library/templates/database/template_engine_2.html" onclick="this.href=&#39;/add/&#39;+document.getElementById(&#39;txt_reg1&#39;).value+&#39;/&#39;+document.getElementById(&#39;txt_reg2&#39;).value"><button class="btn btn-primary"> Add barcode to barcode inventory</button></a>
+                  <hr>
 
 
 
@@ -92,35 +102,24 @@
 
             </div>
         </div>
-        <hr>
-        <a href="/edit/0">  <button class="btn btn-primary"> Add a new post</button></a>
-        <hr>
-        <table id="example" class="display" width="100%" data-page-length="25" data-order="[[ 1, &quot;asc&quot; ]]">
-            <thead>
-                <tr>
-                    <th style="color: #9c27b0;font-family: 'Lobster';font-size: 22px;text-align:center;">Kirana Name</th>
-                    <th style="color: #9c27b0;font-family: 'Lobster';font-size: 22px;text-align:center;">Barcode Name</th>
-                    <th style="color: #9c27b0;font-family: 'Lobster';font-size: 22px;text-align:center;" data-orderable="false">Barcode Number</th>
-                    <th style="color: #9c27b0;font-family: 'Lobster';font-size: 22px;text-align:center;">Phone Number</th>
-                    <th>Add</th>
-                    <th>Delete</th>
 
-
-                </tr>
-            </thead>
-            <tbody>
+        
                 {% for a in authors %}
-                <tr>
+                
+                {% endfor %}
+            <div id="example_wrapper" class="dataTables_wrapper no-footer"><div class="dataTables_length" id="example_length"><label>Show <select name="example_length" aria-controls="example" class=""><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries</label></div><div id="example_filter" class="dataTables_filter"><label>Search:<input type="search" class="" placeholder="" aria-controls="example"></label></div><table id="example" class="display dataTable no-footer" width="100%" data-page-length="25" data-order="[[ 1, &quot;asc&quot; ]]" role="grid" aria-describedby="example_info" style="width: 100%;">
+            <thead>
+                <tr role="row"><th style="color: rgb(156, 39, 176); font-family: Lobster; font-size: 22px; text-align: center; width: 218px;" class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Kirana Name: activate to sort column ascending">Kirana Name</th><th style="color: rgb(156, 39, 176); font-family: Lobster; font-size: 22px; text-align: center; width: 238px;" class="sorting_asc" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Barcode Name: activate to sort column descending">Barcode Name</th><th style="color: rgb(156, 39, 176); font-family: Lobster; font-size: 22px; text-align: center; width: 268px;" data-orderable="false" class="sorting_disabled" rowspan="1" colspan="1" aria-label="Barcode Number">Barcode Number</th><th style="color: rgb(156, 39, 176); font-family: Lobster; font-size: 22px; text-align: center; width: 237px;" class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Phone Number: activate to sort column ascending">Phone Number</th><th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Add: activate to sort column ascending" style="width: 75px;">Add</th><th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Delete: activate to sort column ascending" style="width: 97px;">Delete</th></tr>
+            </thead>
+            <tbody><tr role="row" class="odd">
                     <td style="text-align:center;">{{ a[0] }}</td>
-                    <td style="text-align:center;">{{ a[1] }}</td>
+                    <td style="text-align:center;" class="sorting_1">{{ a[1] }}</td>
                     <td style="color: #9c27b0;text-align:center;">{{ a[2] }}</td>
                     <td style="color: #9c27b0;text-align:center;">{{ a[3] }}</td>
-                    <td><a href="/edit/0"><button class="btn btn-primary" >Add</button></a></td>
-        <td><a href="/delete/{{a[3]}}/{{a[2]}}"><button class="btn btn-primary">Delete</button></a></td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                    <td><a href="https://www.pythonanywhere.com/edit/0"><button class="btn btn-primary">Add</button></a></td>
+        <td><a href="https://www.pythonanywhere.com/delete/%7B%7Ba[3]%7D%7D/%7B%7Ba[2]%7D%7D"><button class="btn btn-primary">Delete</button></a></td>
+                </tr></tbody>
+        </table><div class="dataTables_info" id="example_info" role="status" aria-live="polite">Showing 1 to 1 of 1 entries</div><div class="dataTables_paginate paging_simple_numbers" id="example_paginate"><a class="paginate_button previous disabled" aria-controls="example" data-dt-idx="0" tabindex="-1" id="example_previous">Previous</a><span><a class="paginate_button current" aria-controls="example" data-dt-idx="1" tabindex="0">1</a></span><a class="paginate_button next disabled" aria-controls="example" data-dt-idx="2" tabindex="-1" id="example_next">Next</a></div></div>
         <!-- <div class="container-2">
 
             <div id="ct-chart" style="height: 370px; max-width: 460px; margin: 0px auto;"></div>
@@ -141,7 +140,7 @@
         </div>
         <table id="example" class="display" width="100%" data-page-length="25" data-order="[[ 1, &quot;asc&quot; ]]">
 
-    </body>
+    
     <script>
         function explodePie (e) {
 
@@ -245,4 +244,5 @@
         $('#example').DataTable();
         });
     </script>
-</html>
+
+</table></body></html>
