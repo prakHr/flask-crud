@@ -1,34 +1,47 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
+<!DOCTYPE html>
+<!-- saved from url=(0122)https://www.pythonanywhere.com/user/zorroP/files/home/zorroP/.virtualenvs/flask-introduction/library/templates/layout.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="./layout_files/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+    <link rel="stylesheet" href="./layout_files/jquery.dataTables.min.css">
+    <link href="./layout_files/css" rel="stylesheet">
+    <!-- <script src="https://code.jquery.com/jquery-3.3.1.js"></script> -->
+    <!--<script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>-->
+    <!--<script src="{{url_for('static', filename='canvasjs.min.js')}}"></script>-->
+    <script src="./layout_files/jquery.dataTables.min.js.download"></script>
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="./layout_files/jquery-3.4.1.slim.min.js.download" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="./layout_files/popper.min.js.download" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="./layout_files/bootstrap.min.js.download" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="./layout_files/{{ url_for(&#39;static&#39;, filename=&#39;style.css&#39;) }}">
 
     <title>Simple Flask App | {% block title %}{% endblock %}</title>
   </head>
   <body>
+
+    <!--<div id="container"></div>-->
     <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
       <h5 class="my-0 mr-md-auto font-weight-normal">Simple Flask App</h5>
-      <img src="{{ url_for('static', filename='flask-crud.jpg') }}" style="height:300px; width:400px; text-align:center">
+      <img src="./layout_files/{{ url_for(&#39;static&#39;, filename=&#39;flask-crud.jpg&#39;) }}" style="height:300px; width:400px; text-align:center">
       <nav class="my-2 my-md-0 mr-md-3">
-        <a class="p-2 text-dark" href="/" title="Home">Home</a>
+        <a class="p-2 text-dark" href="https://www.pythonanywhere.com/" title="Home">Home</a>
         {% if not g.user %}
-          <a class="p-2 text-dark" href="/login">Log In / Register</a>
+          <a class="p-2 text-dark" href="https://www.pythonanywhere.com/login">Log In / Register</a>
         {% else %}
-          <a class="p-2 text-dark" href="/dashboard">Dashboard</a>
-          <a class="p-2 text-dark" href="/logout">Logout</a>
+          <a class="p-2 text-dark" href="https://www.pythonanywhere.com/dashboard">Dashboard</a>
+          <a class="p-2 text-dark" href="https://www.pythonanywhere.com/logout">Logout</a>
         {% endif %}
       </nav>
     </div>
+
     <div class="container">
       {% block body %}{% endblock %}
     </div>
     <footer class="text-center">Created by <a href="https://twitter.com/rdegges">@rdegges</a>, built using <a href="https://twitter.com/okta">@okta</a>.
-  </body>
-</html>
+
+  
+
+
+</footer></body></html>

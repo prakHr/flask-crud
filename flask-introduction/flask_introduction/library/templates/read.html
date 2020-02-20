@@ -1,0 +1,58 @@
+{% extends "layout.html" %}
+
+{% block title %}Barcode names of a particular kirana{% endblock %}
+{% block body %}
+<header class="masthead" style="background-image: url('{{ url_for('static', filename='bg.jpg') }}')">
+    <div class="overlay"></div>
+    <div class="container">
+    	<div class="row">
+        	<div class="col-lg-8 col-md-10 mx-auto">
+            	<div class="site-heading">
+              		<h1 style="color:blue">Admin Panel</h1>
+              		<span class="subheading" style="color:blue">Manage your barcodes and change them</span>
+            	</div>
+          	</div>
+        </div>
+    </div>
+</header>
+<hr>
+<div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+
+			<table id="example" class="display" width="100%" data-page-length="25" data-order="[[ 1, &quot;asc&quot; ]]">
+            	<thead>
+                	<tr>
+                    	<th style="color: #9c27b0;font-family: 'Lobster';font-size: 22px;text-align:center;">Barcode Name</th>
+	                    <th style="color: #9c27b0;font-family: 'Lobster';font-size: 22px;text-align:center;">Barcode Number</th>
+	                    <th style="color: #9c27b0;font-family: 'Lobster';font-size: 22px;text-align:center;" data-orderable="false">Barcode Price</th>
+	                    <!-- <th>Add</th>
+	                    <th>Delete</th> -->
+
+	                </tr>
+            	</thead>
+            	<tbody>
+	                {% for a in authors %}
+	                <tr>
+	                    <td style="text-align:center;">{{ a[0] }}</td>
+	                    {% for key,value in a[1].items() %}
+	                    	<td style="text-align:center;">{{ value }}</td>
+	                    {% endfor %}
+	                    <!-- <td><a href="/edit/0"><button class="btn btn-primary" >Add</button></a></td>
+	        <td><a href="/delete/{{a[3]}}/{{a[2]}}"><button class="btn btn-primary">Delete</button></a></td> -->
+	                </tr>
+	                {% endfor %}
+            	</tbody>
+			</table>
+
+		</div>
+    </div>
+</div>
+<hr>		
+{% endblock %}
+<script>
+        $.noConflict();
+        jQuery(document).ready(function($) {
+        $('#example').DataTable();
+        });
+</script>

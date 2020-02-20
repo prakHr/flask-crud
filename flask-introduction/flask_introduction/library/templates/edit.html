@@ -1,15 +1,17 @@
-{% extends "layout.html" %}
+
+<!-- saved from url=(0120)https://www.pythonanywhere.com/user/zorroP/files/home/zorroP/.virtualenvs/flask-introduction/library/templates/edit.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head><body>{% extends "layout.html" %}
 {% block title %}Kirana Names/Barcodes Adder{% endblock %}
 {% block body %}
     <!-- Page Header -->
-    <header class="masthead" style="background-image: url('{{ url_for('static', filename='bg.jpg') }}')">
+    <header class="masthead" style="background-image: url(&#39;{{ url_for(&#39;static&#39;, filename=&#39;bg.jpg&#39;) }}&#39;)">
       <div class="overlay"></div>
       <div class="container">
         <div class="row">
           <div class="col-lg-8 col-md-10 mx-auto">
             <div class="site-heading">
-              <h1>Admin Panel</h1>
-              <span class="subheading">Manage your posts and change them</span>
+              <h1 style="color:blue">Admin Panel</h1>
+              <span class="subheading" style="color:blue">Manage your barcodes and change them</span>
             </div>
           </div>
         </div>
@@ -22,58 +24,63 @@
         <div class="col-lg-8 col-md-10 mx-auto">
 
           <!-- <h1>Basic Actions</h1>
-          
+
            <a href="/dashboard">  <button class="btn btn-primary"> Dashboard Home</button></a>
            <a href="/logout">  <button class="btn btn-primary"> Logout</button></a> -->
            <hr>
-<h1>Add/Edit Post</h1>
+    <h1>Add/Edit Barcodes</h1>
 
-
- <form name="sentMessage" id="contactForm" action = "/edit/{{phoneNumber}}" method="post" novalidate>
-  <!--barcodeName,barcodeNumber,kiranaName,phone_no-->
+    {% for category, message in get_flashed_messages(with_categories=true) %}
+        <!--<p class="alert alert-success" style="color:red">*{{ message }}</p>-->
+        <div class="{{ category }}" role="alert">*{{ message }}</div>
+    {% endfor %}
+    <form name="sentMessage" id="contactForm" action="https://www.pythonanywhere.com/edit/%7B%7BphoneNumber%7D%7D" method="post" novalidate="">
+        <!--barcodeName,barcodeNumber,kiranaName,phone_no-->
             <div class="control-group">
               <div class="form-group floating-label-form-group controls">
                 <label>barcodeName</label>
-                <input type="text" class="form-control" placeholder="BarcodeName" id="barcodeName" name="barcodeName" required data-validation-required-message="Please enter your barcode name." value="{{post.barcodeName}}">
+                <input type="text" class="form-control" placeholder="Give your barcode a name" id="barcodeName" name="barcodeName" required="" data-validation-required-message="Please enter your barcode name." value="{{post.barcodeName}}">
                 <p class="help-block text-danger"></p>
               </div>
             </div>
             <div class="control-group">
               <div class="form-group floating-label-form-group controls">
                 <label>barcodeNumber</label>
-                <input type="text" class="form-control" placeholder="BarcodeNumber" id="barcodeNumber" name="barcodeNumber" required data-validation-required-message="Please enter your barcode number." value="{{post.barcodeNumber}}">
+                <input type="text" class="form-control" placeholder="Give your barcode a number" id="barcodeNumber" name="barcodeNumber" required="" data-validation-required-message="Please enter your barcode number." value="{{post.barcodeNumber}}">
                 <p class="help-block text-danger"></p>
               </div>
             </div>
             <div class="control-group">
               <div class="form-group col-xs-12 floating-label-form-group controls">
                 <label>kiranaName</label>
-                <input type="text" class="form-control" placeholder="KiranaName" name="kiranaName" id="kiranaName" required data-validation-required-message="Please enter your kirana name." value="{{post.kiranaName}}">
+                <input type="text" class="form-control" placeholder="Give your kirana a name" name="kiranaName" id="kiranaName" required="" data-validation-required-message="Please enter your kirana name." value="{{post.kiranaName}}">
                 <p class="help-block text-danger"></p>
               </div>
             </div>
-            
+
 
             <div class="control-group">
               <div class="form-group floating-label-form-group controls">
                 <label>phone_no</label>
-                <input type="text" class="form-control" placeholder="Phone_no" id="phone_no" name="phone_no" required data-validation-required-message="Please enter your barcode name." value="{{post.phone_no}}">
+                <input type="text" class="form-control" placeholder="your phone no." id="phone_no" name="phone_no" required="" data-validation-required-message="Please enter your barcode name." value="{{post.phone_no}}">
                 <p class="help-block text-danger"></p>
               </div>
             </div>
 
             <br>
-            <div id="success"></div>
-            <div class="form-group">
-              <button type="submit" class="btn btn-primary" id="sendMessageButton">Submit</button>
-            </div>
+            <!--<div id="success"></div>-->
+            <input class="btn btn-primary" type="submit" value="Submit" id="sendMessageButton">
+
+            <!--<div class="form-group">-->
+            <!--  <button type="submit" class="btn btn-primary" id="sendMessageButton">Submit</button>-->
+            <!--</div>-->
           </form>
 
 
 
 
-      
+
         </div>
       </div>
     </div>
-    {% endblock %}
+    {% endblock %}</body></html>

@@ -1,8 +1,13 @@
-{% extends "layout.html" %}
+
+<!-- saved from url=(0125)https://www.pythonanywhere.com/user/zorroP/files/home/zorroP/.virtualenvs/flask-introduction/library/templates/dashboard.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head><body>{% extends "layout.html" %}
 
 {% block title %}Dashboard{% endblock %}
 
 {% block body %}
+    {% for category, message in get_flashed_messages(with_categories=true) %}
+        <div class="{{ category }}" role="alert">*{{ message }}</div>
+    {% endfor %}
 
   <h1 class="text-center">Dashboard</h1>
   <div class="row">
@@ -20,13 +25,14 @@
           <span class="caret"></span>
         </button>
         <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
-          <li role="presentation"><a role="menuitem" tabindex="-1" href="/login">Login</a></li>
-          <li role="presentation"><a role="menuitem" tabindex="-1" href="/logout">Logout</a></li>
-          <li role="presentation"><a role="menuitem" tabindex="-1" href="/users">Users Dashboard</a></li>
+          <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.pythonanywhere.com/login">Login</a></li>
+          <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.pythonanywhere.com/logout">Logout</a></li>
+          <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.pythonanywhere.com/users">Users Dashboard</a></li>
           <li role="presentation" class="divider"></li>
-          <li role="presentation"><a role="menuitem" tabindex="-1" href="/barcode">See our barcodes inventory</a></li>
+          <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.pythonanywhere.com/barcode">See our barcodes inventory</a></li>
         </ul>
       </div>
-    </div>    
+    </div>
   </div>
 {% endblock %}
+</body></html>
