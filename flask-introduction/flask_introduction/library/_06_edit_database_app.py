@@ -124,7 +124,7 @@ def data():
 def barcodes_template_data():
     if(oidc.user_loggedin):
         barcodes_collection = g.db.collection('barcode_inventory')
-        freq_dict=ExtractorOfBarcodesFreqDict(barcodes_collection)
+        freq_dict=de.ExtractorOfBarcodesFreqDict(barcodes_collection)
         key_arr=list(freq_dict.keys())
         value_arr=list(freq_dict.values())
 
@@ -139,7 +139,7 @@ def barcodes_template_data():
 def take_barcodes():
     if(oidc.user_loggedin):
     	barcodes_collection = g.db.collection('barcodes')
-    	collections_list=ExtractorID(barcodes_collection)
+    	collections_list=de.ExtractorID(barcodes_collection)
     	new_list=[]
     	for [a,b] in collections_list:new_list.append(dict(ID=a, name=b))
     	return render_template('database/barcodes_template.html',authors=new_list)
@@ -151,31 +151,31 @@ def hello_world():
     if(oidc.user_loggedin):
         barcodes_collection = g.db.collection('barcode_inventory')
         BarcodesSet=de.ExtractorOfBarcodes(barcodes_collection)
-
         users_collection = ref = g.db.collection('users')
         UsersArray=de.ExtractorID(ref)
         kiranaNamesSet2=de.ExtractorOfKiranaNamesAndCorrespondingPhones(ref)
-        #kiranaNamesSet=ExtractorOfKiranaNames(ref)
         kirana_Barcode_Set={}
-
         totalBills,totalBarcodes,totalSpeechInventory=0,0,0
         newkiranaNamesSet2={}
+        for doc in UsersArray:
+            barcode_inventory_documents=g.db.collection(u'users').document(doc[0]).collection(u'barcode_inventory')
+            bills_documents=g.db.collection(u'users').document(doc[0]).collection(u'bills')
+            speech_inventory_documents=g.db.collection(u'users').document(doc[0]).collection(u'speech_inventory')
+
+            barcode_inventory_collection=barcode_inventory_documents.get()
+            bills_collection=bills_documents.get()
+            speech_inventory_collection=speech_inventory_documents.get()
+
+            totalBarcodes+=de.lengthOfCollection(barcode_inventory_collection)
+            totalBills+=de.lengthOfCollection(bills_collection)
+            totalSpeechInventory+=de.lengthOfCollection(speech_inventory_collection)
+
         for (k,phone_no) in kiranaNamesSet2:
             kirana_Barcode_Set[k]=set()
             for doc in UsersArray:
                 barcode_inventory_documents=g.db.collection(u'users').document(doc[0]).collection(u'barcode_inventory')
-                bills_documents=g.db.collection(u'users').document(doc[0]).collection(u'bills')
-                speech_inventory_documents=g.db.collection(u'users').document(doc[0]).collection(u'speech_inventory')
-
-                barcode_inventory_collection=barcode_inventory_documents.get()
-                bills_collection=bills_documents.get()
-                speech_inventory_collection=speech_inventory_documents.get()
 
                 Barcodes_Subset=de.ExtractorOfBarcodes(barcode_inventory_documents)
-
-                totalBarcodes+=de.lengthOfCollection(barcode_inventory_collection)
-                totalBills+=de.lengthOfCollection(bills_collection)
-                totalSpeechInventory+=de.lengthOfCollection(speech_inventory_collection)
 
                 if 'kiranaName' in doc[1]:
                     current_owner=doc[1]['kiranaName']
@@ -194,7 +194,7 @@ def hello_world():
 
         return render_template('database/template_engine_2.html',authors=new_list,totalBills=totalBills,totalBarcodes=totalBarcodes,totalSpeechInventory=totalSpeechInventory)
     else:return(render_template("layout.html"))
-
+    
 class Posts(object):
     def __init__(self,barcodeName,barcodeNumber,date=datetime.now(),barcodePrice=0):
         self.barcodeName=barcodeName
@@ -225,7 +225,14 @@ class Posts(object):
     def __repr__(self):
         return(u'Posts(barcodeName={},barcodeNumber={},date={},barcodePrice={})'.format(
             self.barcodeName,self.barcodeNumber,self.date,self.barcodePrice))
-            
+
+def checkStringMadeOfInt(string):
+    digits="0123456789"
+    for s in string:
+        if s not in digits:
+            return False
+    return True
+         
 @app.route("/edit/<string:phoneNumber>",methods=['GET','POST'])
 def edit(phoneNumber):
     if(oidc.user_loggedin):
@@ -247,35 +254,7 @@ def edit(phoneNumber):
                 g.db.collection('users').document(phone_no).set(data1)
                 #db.collection('users').document(phoneno).collection('barcode_inventory').document(barcode_no).set(data2)
                 g.db.collection('users').document(phone_no).collection('barcode_inventory').document(barcodeNumber).set(Posts(barcodeName,barcodeNumber,date).to_dict())
-            '''
-            else:
-                #get data from database
-                
-                
-                barcodeName,barcodeNumber,kiranaName='','',''
-                docs=g.db.collection('users').where(u'phoneNo',u'==',phoneNumber).stream()
-                for i,doc in enumerate(docs):
-                    if i>0:break
-                    else:
-                        #phoneNumber=doc.id
-                        mydict1=doc.to_dict()
-                        kiranaName=mydict1['kiranaName']
-                        barcodeNoDocs=g.db.collection('users').document(phoneNumber).collection('barcode_inventory').get()
-                        for j,barcodeNoDoc in enumerate(barcodeNoDocs):
-                            if j>0:break
-                            else:
-                                mydict2=barcodeNoDoc.to_dict()
-                                barcodeName=mydict2['barcodeName']
-                                barcodeNumber=mydict2['barcodeNumber']
-                post=Posts(barcodeName,barcodeNumber).to_dict()                
-                post[u'kiranaName']=kiranaName
-                post[u'phoneNumber']=phoneNumber
-                #post.date=date
-                g.db.collection(u'users').document(barcodeNumber).update(post)
-                
 
-                return redirect('/edit/'+phoneNumber)
-                '''
     
         barcodeName,barcodeNumber,kiranaName='','',''
         docs=g.db.collection('users').where(u'phoneNumber',u'==',phoneNumber).stream()
@@ -304,15 +283,29 @@ def edit(phoneNumber):
 @app.route("/delete/<string:phoneNumber>/<string:barcodeNumber>",methods=['GET','POST'])
 def delete(phoneNumber,barcodeNumber):
     if(oidc.user_loggedin):
-        '''
-        docs=g.db.collection('users').where(u'phoneNo',u'==',phoneNumber).stream()
-        deleted=0
-        for doc in docs:
-            doc.reference.delete()
-            deleted+=1
-        '''
         doc=g.db.collection(u'users').document(phoneNumber).collection(u'barcode_inventory').document(barcodeNumber)
         doc.delete()
+        return redirect(url_for(".dashboard"))
+    else:return(render_template("layout.html"))
+
+@app.route("/read/<string:phoneNumber>")
+def read(phoneNumber):
+    if(oidc.user_loggedin):
+        ref=g.db.collection(u'users').document(phoneNumber).collection(u'barcode_inventory')
+        barcodesArray=de.ExtractorID(ref)
+        return render_template("read.html",authors=barcodesArray)
+    else:return(render_template("layout.html"))
+
+@app.route("/add/<string:barcodeNumber>/<string:barcodeName>")
+def add(barcodeNumber,barcodeName):
+    if(oidc.user_loggedin):
+        checks=checkStringMadeOfInt(barcodeNumber)
+        msg="Barcode Number"
+        if not checks:
+            flash(msg+" should be integer","alert alert-danger")
+        else:
+            g.db.collection(u'barcode_inventory').document(barcodeNumber).set({'barcodeNumber':barcodeNumber,'barcodeName':barcodeName})
+            flash("Congratulations data has been added to barcode inventory","alert alert-success")
         return redirect(url_for(".dashboard"))
     else:return(render_template("layout.html"))
 
