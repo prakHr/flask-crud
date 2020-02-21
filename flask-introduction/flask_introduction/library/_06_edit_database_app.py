@@ -68,58 +68,6 @@ def logout():
     return redirect(url_for(".index"))
 
 
-@app.route('/data')
-def data():
-    if(oidc.user_loggedin):
-
-        users_collection = ref = g.db.collection('users')
-        UsersArray=de.ExtractorID(ref)
-        kiranaNamesSet=de.ExtractorOfKiranaNames(ref)
-        arrayOfNames=[]
-        arrayOfBills=[]
-        arrayOfSpeechItems=[]
-        arrayOfBarcodeItems=[]
-        kirana_Barcode_Set={}
-
-        for k in kiranaNamesSet:
-            total,totalBarcodes,totalSpeechInventory=0,0,0
-
-            for doc in UsersArray:
-                barcode_inventory_documents=g.db.collection(u'users').document(doc[0]).collection(u'barcode_inventory')
-                bills_documents=g.db.collection(u'users').document(doc[0]).collection(u'bills')
-                speech_inventory_documents=g.db.collection(u'users').document(doc[0]).collection(u'speech_inventory')
-
-                barcode_inventory_collection=barcode_inventory_documents.get()
-                bills_collection=bills_documents.get()
-                speech_inventory_collection=speech_inventory_documents.get()
-
-                barcodes=de.lengthOfCollection(barcode_inventory_collection)
-                bills=de.lengthOfCollection(bills_collection)
-                speechItems=de.lengthOfCollection(speech_inventory_collection)
-
-                if 'kiranaName' in doc[1]:
-                    current_owner=doc[1]['kiranaName']
-                    current_owner=current_owner.replace(' ','')
-                    current_owner=current_owner.lower()
-                if k==current_owner:
-                    totalBarcodes+=barcodes
-                    total+=bills
-                    totalSpeechInventory+=speechItems
-
-            arrayOfNames.append(k)
-            arrayOfBills.append(total)
-            arrayOfBarcodeItems.append(totalBarcodes)
-            arrayOfSpeechItems.append(totalSpeechInventory)
-
-        return jsonify({
-                'array_NBBS':[arrayOfNames,arrayOfBills,arrayOfBarcodeItems,arrayOfSpeechItems]#used in template_engine_1.html
-
-
-            })
-    else:return jsonify({
-        'array_NBBS':[[],[],[],[]]
-        })
-
 @app.route('/barcodes_template_data')
 def barcodes_template_data():
     if(oidc.user_loggedin):
@@ -149,50 +97,76 @@ def take_barcodes():
 @app.route('/users',endpoint="hello_world")
 def hello_world():
     if(oidc.user_loggedin):
+        users_collection = ref = g.db.collection('users')
+        kiranaNamesSet2=de.ExtractorOfKiranaNamesAndCorrespondingPhones(ref)
+
+        kirana_Barcode_Set={}
         barcodes_collection = g.db.collection('barcode_inventory')
         BarcodesSet=de.ExtractorOfBarcodes(barcodes_collection)
-        users_collection = ref = g.db.collection('users')
+
         UsersArray=de.ExtractorID(ref)
-        kiranaNamesSet2=de.ExtractorOfKiranaNamesAndCorrespondingPhones(ref)
-        kirana_Barcode_Set={}
+
         totalBills,totalBarcodes,totalSpeechInventory=0,0,0
         newkiranaNamesSet2={}
-        for doc in UsersArray:
-            barcode_inventory_documents=g.db.collection(u'users').document(doc[0]).collection(u'barcode_inventory')
-            bills_documents=g.db.collection(u'users').document(doc[0]).collection(u'bills')
-            speech_inventory_documents=g.db.collection(u'users').document(doc[0]).collection(u'speech_inventory')
 
-            barcode_inventory_collection=barcode_inventory_documents.get()
-            bills_collection=bills_documents.get()
-            speech_inventory_collection=speech_inventory_documents.get()
-
-            totalBarcodes+=de.lengthOfCollection(barcode_inventory_collection)
-            totalBills+=de.lengthOfCollection(bills_collection)
-            totalSpeechInventory+=de.lengthOfCollection(speech_inventory_collection)
+        arrayOfNames=[]
+        arrayOfBills=[]
+        arrayOfSpeechItems=[]
+        arrayOfBarcodeItems=[]
 
         for (k,phone_no) in kiranaNamesSet2:
+            total1,totalBarcodes1,totalSpeechInventory1=0,0,0
+            if k not in newkiranaNamesSet2:
+                newkiranaNamesSet2[k]=[phone_no]#phone_no is  unique document id so not an issue of appending duplicate value
+            else:
+                newkiranaNamesSet2[k].append(phone_no)
+
             kirana_Barcode_Set[k]=set()
             for doc in UsersArray:
-                barcode_inventory_documents=g.db.collection(u'users').document(doc[0]).collection(u'barcode_inventory')
-
-                Barcodes_Subset=de.ExtractorOfBarcodes(barcode_inventory_documents)
 
                 if 'kiranaName' in doc[1]:
                     current_owner=doc[1]['kiranaName']
-                    current_owner=current_owner.replace(' ','')
-                    current_owner=current_owner.lower()
+                    #current_owner=current_owner.replace(' ','')
+                    #current_owner=current_owner.lower()
                 if k==current_owner:
-                    newkiranaNamesSet2[k]=phone_no
+                    barcode_inventory_documents=g.db.collection(u'users').document(doc[0]).collection(u'barcode_inventory')
+                    bills_documents=g.db.collection(u'users').document(doc[0]).collection(u'bills')
+                    speech_inventory_documents=g.db.collection(u'users').document(doc[0]).collection(u'speech_inventory')
+
+                    Barcodes_Subset=de.ExtractorOfBarcodes(barcode_inventory_documents)
+
+                    barcode_inventory_collection=barcode_inventory_documents.get()
+                    bills_collection=bills_documents.get()
+                    speech_inventory_collection=speech_inventory_documents.get()
+
+                    x=de.lengthOfCollection(barcode_inventory_collection)
+                    y=de.lengthOfCollection(bills_collection)
+                    z=de.lengthOfCollection(speech_inventory_collection)
+
+                    totalBarcodes+=x
+                    totalBills+=y
+                    totalSpeechInventory+=z
+
+                    totalBarcodes1+=x
+                    total1+=y
+                    totalSpeechInventory1+=z
+
+
                     if kirana_Barcode_Set[k]==set():
                         kirana_Barcode_Set[k]=Barcodes_Subset & BarcodesSet
                     else:
                         kirana_Barcode_Set[k]=kirana_Barcode_Set[k].union(Barcodes_Subset & BarcodesSet)
+            arrayOfNames.append(k)
+            arrayOfBills.append(total1)
+            arrayOfBarcodeItems.append(totalBarcodes1)
+            arrayOfSpeechItems.append(totalSpeechInventory1)
+
         new_list=[]
         for k in kirana_Barcode_Set.keys():
             for (a,b) in kirana_Barcode_Set[k]:
                 new_list.append([k,a,b,newkiranaNamesSet2[k]])
 
-        return render_template('database/template_engine_2.html',authors=new_list,totalBills=totalBills,totalBarcodes=totalBarcodes,totalSpeechInventory=totalSpeechInventory)
+        return render_template('database/template_engine_2.html',authors=new_list,totalBills=totalBills,totalBarcodes=totalBarcodes,totalSpeechInventory=totalSpeechInventory,a=arrayOfNames,b=arrayOfBills,c=arrayOfBarcodeItems,d=arrayOfSpeechItems)
     else:return(render_template("layout.html"))
     
 class Posts(object):
