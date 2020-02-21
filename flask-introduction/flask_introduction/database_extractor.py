@@ -58,8 +58,9 @@ def ExtractorOfKiranaNames(reference):
     for doc in docs:
         mydict=doc.to_dict()
         if 'kiranaName' in mydict:
-            newstring=mydict['kiranaName'].replace(' ','')
-            newstring=newstring.lower()
+            newstring=mydict['kiranaName']
+            #newstring=newstring.replace(' ','')
+            #newstring=newstring.lower()
             if newstring=='':
                 continue
             Set.add(newstring)
@@ -73,8 +74,9 @@ def ExtractorOfKiranaNamesAndCorrespondingPhones(reference):
     for doc in docs:
         mydict=doc.to_dict()
         if 'kiranaName' in mydict:
-            newstring=mydict['kiranaName'].replace(' ','')
-            newstring=newstring.lower()
+             newstring=mydict['kiranaName']
+            #newstring=newstring.replace(' ','')
+            #newstring=newstring.lower()
             if newstring=='':
                 continue
             Set.add((newstring,doc.id))  
