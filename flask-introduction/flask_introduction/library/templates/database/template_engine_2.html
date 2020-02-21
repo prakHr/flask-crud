@@ -3,7 +3,7 @@
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         
         <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no" name="viewport">
-        </head><body><h1>Corresponding list of barcodes with names:</h1>
+
         <link rel="stylesheet" href="./template_engine_2_files/jquery.dataTables.min.css">
         <link href="./template_engine_2_files/css" rel="stylesheet">
         <!-- <script src="https://code.jquery.com/jquery-3.3.1.js"></script> -->
@@ -20,10 +20,10 @@
 
 
 
-    
+    </head>
 
 
-    
+    <body>
         <div class="">
 
             <div class="main-panel">
@@ -109,7 +109,7 @@
                 {% endfor %}
             <div id="example_wrapper" class="dataTables_wrapper no-footer"><div class="dataTables_length" id="example_length"><label>Show <select name="example_length" aria-controls="example" class=""><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries</label></div><div id="example_filter" class="dataTables_filter"><label>Search:<input type="search" class="" placeholder="" aria-controls="example"></label></div><table id="example" class="display dataTable no-footer" width="100%" data-page-length="25" data-order="[[ 1, &quot;asc&quot; ]]" role="grid" aria-describedby="example_info" style="width: 100%;">
             <thead>
-                <tr role="row"><th style="color: rgb(156, 39, 176); font-family: Lobster; font-size: 22px; text-align: center; width: 218px;" class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Kirana Name: activate to sort column ascending">Kirana Name</th><th style="color: rgb(156, 39, 176); font-family: Lobster; font-size: 22px; text-align: center; width: 238px;" class="sorting_asc" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Barcode Name: activate to sort column descending">Barcode Name</th><th style="color: rgb(156, 39, 176); font-family: Lobster; font-size: 22px; text-align: center; width: 268px;" data-orderable="false" class="sorting_disabled" rowspan="1" colspan="1" aria-label="Barcode Number">Barcode Number</th><th style="color: rgb(156, 39, 176); font-family: Lobster; font-size: 22px; text-align: center; width: 237px;" class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Phone Number: activate to sort column ascending">Phone Number</th><th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Add: activate to sort column ascending" style="width: 75px;">Add</th><th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Delete: activate to sort column ascending" style="width: 97px;">Delete</th></tr>
+                <tr role="row"><th style="color: rgb(156, 39, 176); font-family: Lobster; font-size: 22px; text-align: center; width: 220px;" class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Kirana Name: activate to sort column ascending">Kirana Name</th><th style="color: rgb(156, 39, 176); font-family: Lobster; font-size: 22px; text-align: center; width: 238px;" class="sorting_asc" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Barcode Name: activate to sort column descending">Barcode Name</th><th style="color: rgb(156, 39, 176); font-family: Lobster; font-size: 22px; text-align: center; width: 274px;" data-orderable="false" class="sorting_disabled" rowspan="1" colspan="1" aria-label="Barcode Number">Barcode Number</th><th style="color: rgb(156, 39, 176); font-family: Lobster; font-size: 22px; text-align: center; width: 245px;" class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Phone Number: activate to sort column ascending">Phone Number</th><th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Add: activate to sort column ascending" style="width: 67px;">Add</th><th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Delete: activate to sort column ascending" style="width: 89px;">Delete</th></tr>
             </thead>
             <tbody><tr role="row" class="odd">
                     <td style="text-align:center;">{{ a[0] }}</td>
@@ -151,10 +151,37 @@
         var myChart,myDoughnutChart,mySplineChart;
         var namesArray,billsArray,speechArray,dataPointsArray=[];
         //(PieChart,BarChart,LineChart)=>(Barcodes,Bills,SpeechItems)=>(2,1,3)
-        var getData=$.get('/templates/data');
-        getData.done(function(results){
-            namesArray=results.array_NBBS[0];
-            billsArray=results.array_NBBS[1];
+        // var getData=$.get('/templates/data');
+        // getData.done(function(results){
+        //     namesArray=results.array_NBBS[0];
+        //     billsArray=results.array_NBBS[1];
+        //     for(var i=0;i<namesArray.length;i++){
+        //         //console.log(namesArray[i]);
+        //         //console.log(typeof(namesArray[i]));
+        //         dataPointsArray.push({label: namesArray[i], y: billsArray[i]});
+        //     };
+        //     myChart=new CanvasJS.Chart("ct-chart",{
+        //         animationEnabled: true,
+        //         theme: "light2",
+        //         title: {
+        //             text: "Sold Bills"
+        //         },
+        //         axisY: {
+        //             title: "total bills",
+        //             titleFontSize: 24
+        //         },
+        //         data:[{
+        //             type: "column",
+        //             yValueFormatString: "#,### Bills",
+        //             indexLabel: "{y}",
+        //             dataPoints:dataPointsArray
+        //         }]
+        //     });
+
+
+
+            namesArray={{a|safe}};
+            billsArray={{b|safe}};
             for(var i=0;i<namesArray.length;i++){
                 //console.log(namesArray[i]);
                 //console.log(typeof(namesArray[i]));
@@ -178,9 +205,10 @@
                 }]
             });
 
+
             myChart.render();
             dataPointsArray=[];
-            barcodesArray=results.array_NBBS[2];
+            barcodesArray={{c|safe}};
             for(var i=0;i<namesArray.length;i++){
                 dataPointsArray.push({y: barcodesArray[i], name: namesArray[i]});
             };
@@ -207,7 +235,7 @@
             });
             myDoughnutChart.render();
             dataPointsArray=[];
-            speechArray=results.array_NBBS[3];
+            speechArray={{d|safe}};
             //console.log(speechArray);
             for(var i=0;i<namesArray.length;i++){
                 dataPointsArray.push({label: namesArray[i], y: speechArray[i]});
@@ -234,7 +262,7 @@
             mySplineChart.render();
 
 
-        });
+
 
 
     </script>
