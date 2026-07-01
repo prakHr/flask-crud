@@ -4,7 +4,7 @@ Simple web app that hosts inventory dashboard created with python3, okta, bootst
 You can go to dashboard and from there you can either go to users inventory dashboard, look at pie-chart of barcodes or 
 logout.
 
-<img src="https://github.com/prakHr/flask-crud/blob/master/flask-introduction/flask_introduction/library/static/flask-crud.jpg" width="480" height="300">
+<img src="https://github.com/prakHr/flask-crud/blob/main/flask-introduction/flask_introduction/library/static/flask-crud.jpg" width="480" height="300">
 
 ## Table of contents
 * [Summary](#summary)
